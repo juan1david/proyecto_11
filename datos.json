@@ -43,14 +43,14 @@
   },
   {
     "codigoproducto": "08",
-    "nombreproducto": "NUEVO PRODUCTO",
-    "inventarioproducto": 5,
-    "precioproducto": 25000
+    "nombreproducto": "LENTES",
+    "inventarioproducto": 12,
+    "precioproducto": 10000
   },
   {
-    "codigoproducto": "08",
-    "nombreproducto": "NUEVO PRODUCTO",
+    "codigoproducto": "10",
+    "nombreproducto": "GORRA",
     "inventarioproducto": 5,
-    "precioproducto": 25000
+    "precioproducto": 7000
   }
 ]

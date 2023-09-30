@@ -1,50 +1,71 @@
 const colors = require('colors');
 const fs = require('fs').promises;
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 class Producto {
-  constructor(codigoproducto, nombreproducto, inventarioproducto, precioproducto) {
-    this.codigoproducto = codigoproducto;
-    this.nombreproducto = nombreproducto;
-    this.inventarioproducto = inventarioproducto;
-    this.precioproducto = precioproducto;
+  #codigoproducto;
+  #nombreproducto;
+  #inventarioproducto;
+  #precioproducto;
+  constructor() {
+    this.#codigoproducto = '';
+    this.#nombreproducto = '';
+    this.#inventarioproducto = 0;
+    this.#precioproducto = 0;
+  }
+
+  get codigoproducto() {
+    return this.#codigoproducto;
+  }
+
+  set codigoproducto(codigo) {
+    this.#codigoproducto = codigo;
+  }
+
+  get nombreproducto() {
+    return this.#nombreproducto;
+  }
+
+  set nombreproducto(nombre) {
+    this.#nombreproducto = nombre;
+  }
+
+  get inventarioproducto() {
+    return this.#inventarioproducto;
+  }
+
+  set inventarioproducto(inventario) {
+    this.#inventarioproducto = inventario;
+  }
+
+  get precioproducto() {
+    return this.#precioproducto;
+  }
+
+  set precioproducto(precio) {
+    this.#precioproducto = precio;
   }
 }
 
 class ProductosTienda {
+  #listaproductos;
   constructor() {
-    this.listaproductos = [];
+    this.#listaproductos = [];
   }
 
-  async cargaarchivoproductos() {
-    try {
-      const data = await fs.readFile('./datos.json', 'utf-8');
-      this.listaproductos = JSON.parse(data);
-      console.log(`Productos cargados desde datos1.json`.bgBlue);
-    } catch (error) {
-      console.error(`Error al cargar el archivo: ${error.message}`.bgRed);
-    }
+  get listaproductos() {
+    return this.#listaproductos;
   }
 
-  async agregarProducto(nuevoProducto) {
-    this.listaproductos.push(nuevoProducto);
-    console.log(`Producto agregado:`.bgGreen);
-    console.log(nuevoProducto);
-    await this.grabararchivoproductos();
-  }
-
-  async grabararchivoproductos() {
-    try {
-      const cadenaJson = JSON.stringify(this.listaproductos, null, 2);
-      const nombrearchivo = 'datos.json';
-      await fs.writeFile(nombrearchivo, cadenaJson, 'utf-8');
-      console.log(`DATOS GUARDADOS EN ${nombrearchivo}`.bgMagenta);
-    } catch (error) {
-      console.error(`Error al guardar el archivo: ${error.message}`.bgRed);
-    }
+  set listaproductos(lista) {
+    this.#listaproductos = lista;
   }
 
   mostrarproductos() {
-    this.listaproductos.forEach((producto) => {
+    this.#listaproductos.forEach((producto) => {
       console.log(
         `|     ` +
           producto.codigoproducto +
@@ -63,6 +84,39 @@ class ProductosTienda {
   }
 }
 
+const cargaarchivoproductos = async (productostienda) => {
+  try {
+    const data = await fs.readFile('./datos.json', 'utf-8');
+    productostienda.listaproductos = JSON.parse(data);
+    console.log(`Productos cargados desde datos.json`.bgBlue);
+  } catch (error) {
+    console.error(`Error al cargar el archivo: ${error.message}`.bgRed);
+  }
+};
+
+const agregarProducto = async (productostienda, nuevoProducto) => {
+  productostienda.listaproductos.push(nuevoProducto);
+  console.log(`Producto agregado:`.bgGreen);
+  console.log(nuevoProducto);
+  await grabararchivoproductos(productostienda.listaproductos.map(producto => ({
+    codigoproducto: producto.codigoproducto,
+    nombreproducto: producto.nombreproducto,
+    inventarioproducto: producto.inventarioproducto,
+    precioproducto: producto.precioproducto,
+  })));
+};
+
+const grabararchivoproductos = async (listaproductos) => {
+  try {
+    const cadenaJson = JSON.stringify(listaproductos, null, 2);
+    const nombrearchivo = './datos.json';
+    await fs.writeFile(nombrearchivo, cadenaJson, 'utf-8');
+    console.log(`DATOS GUARDADOS EN ${nombrearchivo}`.bgMagenta);
+  } catch (error) {
+    console.error(`Error al guardar el archivo: ${error.message}`.bgRed);
+  }
+};
+
 const mostrarMenu = () => {
   return new Promise((resolve) => {
     console.log(`=========================`.green);
@@ -72,13 +126,7 @@ const mostrarMenu = () => {
     console.log(`${'2'.green} Listar productos`);
     console.log(`${'3'.green} Salir\n`);
 
-    const readline = require('readline').createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
     readline.question('Seleccione una opción: ', (opt) => {
-      readline.close();
       resolve(opt);
     });
   });
@@ -86,14 +134,28 @@ const mostrarMenu = () => {
 
 const pausa = () => {
   return new Promise((resolve) => {
-    const readline = require('readline').createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
     readline.question(`\nPresione ${'ENTER'.yellow} para continuar\n`, (opt) => {
-      readline.close();
       resolve();
+    });
+  });
+};
+
+const obtenerDetallesProducto = async () => {
+  return new Promise((resolve) => {
+    const nuevoProducto = new Producto();
+
+    readline.question('Código del producto: ', (codigo) => {
+      nuevoProducto.codigoproducto = codigo;
+      readline.question('Nombre del producto: ', (nombre) => {
+        nuevoProducto.nombreproducto = nombre;
+        readline.question('Inventario del producto: ', (inventario) => {
+          nuevoProducto.inventarioproducto = parseInt(inventario);
+          readline.question('Precio del producto: ', (precio) => {
+            nuevoProducto.precioproducto = parseFloat(precio);
+            resolve(nuevoProducto);
+          });
+        });
+      });
     });
   });
 };
@@ -106,8 +168,8 @@ const main = async () => {
 
   let productostienda = new ProductosTienda();
 
-  await productostienda.cargaarchivoproductos(); 
-
+  await cargaarchivoproductos(productostienda);
+  
   let salir = false;
   while (!salir) {
     const opcion = await mostrarMenu();
@@ -115,24 +177,22 @@ const main = async () => {
     switch (opcion) {
       case '1':
         
-        const nuevoProducto = new Producto(
-          '08',
-          'NUEVO PRODUCTO',
-          5,
-          25000
-        ); 
-
-        await productostienda.agregarProducto(nuevoProducto);
+      console.log(`Ingrese los detalles del nuevo producto:`.bgBlue);
+        const nuevoProducto = await obtenerDetallesProducto();
+        console.log(`Producto agregado:`.bgGreen);
+        console.log(nuevoProducto);
+        await agregarProducto(productostienda, nuevoProducto);
         await pausa();
         break;
+
       case '2':
-        
+
         console.log(`Listado de productos:`.bgBlue);
         productostienda.mostrarproductos();
         await pausa();
         break;
       case '3':
-       
+
         salir = true;
         break;
       default:
@@ -142,7 +202,9 @@ const main = async () => {
     }
   }
 
+  readline.close();
   console.log('¡Gracias por usar el programa!'.bgCyan);
 };
 
 main();
+
