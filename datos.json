@@ -1,56 +1,32 @@
 [
   {
-    "codigoproducto": "01",
-    "nombreproducto": "PANTALON",
-    "inventarioproducto": 9,
-    "precioproducto": 45000
-  },
-  {
-    "codigoproducto": "02",
-    "nombreproducto": "CAMISA",
-    "inventarioproducto": 5,
-    "precioproducto": 15000
-  },
-  {
-    "codigoproducto": "03",
-    "nombreproducto": "MEDIAS",
-    "inventarioproducto": 12,
-    "precioproducto": 1000
-  },
-  {
-    "codigoproducto": "04",
-    "nombreproducto": "CHAQUETA",
-    "inventarioproducto": 2,
-    "precioproducto": 35000
-  },
-  {
-    "codigoproducto": "05",
-    "nombreproducto": "ZAPATOS",
+    "codigoproducto": "1",
+    "nombreproducto": "1",
     "inventarioproducto": 1,
-    "precioproducto": 75000
+    "precioproducto": 1
   },
   {
-    "codigoproducto": "06",
-    "nombreproducto": "TENIS",
-    "inventarioproducto": 4,
-    "precioproducto": 65500
+    "codigoproducto": "1",
+    "nombreproducto": "1",
+    "inventarioproducto": 1,
+    "precioproducto": 1
   },
   {
-    "codigoproducto": "07",
-    "nombreproducto": "CELULAR",
+    "codigoproducto": "1",
+    "nombreproducto": "1",
+    "inventarioproducto": 1,
+    "precioproducto": 1
+  },
+  {
+    "codigoproducto": "2",
+    "nombreproducto": "2",
     "inventarioproducto": 2,
-    "precioproducto": 65500
+    "precioproducto": 2
   },
   {
-    "codigoproducto": "08",
-    "nombreproducto": "LENTES",
-    "inventarioproducto": 12,
-    "precioproducto": 10000
-  },
-  {
-    "codigoproducto": "10",
-    "nombreproducto": "GORRA",
-    "inventarioproducto": 5,
-    "precioproducto": 7000
+    "codigoproducto": "1",
+    "nombreproducto": "1",
+    "inventarioproducto": 1,
+    "precioproducto": 1
   }
 ]

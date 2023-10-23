@@ -5,6 +5,9 @@ const readline = require('readline').createInterface({
   output: process.stdout,
 });
 
+console.log('Este programa permite gestionar una lista de productos en una tienda.');
+
+
 class Producto {
   #codigoproducto;
   #nombreproducto;
@@ -207,4 +210,6 @@ const main = async () => {
 };
 
 main();
+
+console.log('Este programa permite gestionar una lista de productos en una tienda.');
 
